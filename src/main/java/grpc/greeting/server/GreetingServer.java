@@ -13,6 +13,7 @@ public class GreetingServer {
         Server server = ServerBuilder
                 .forPort(50051)
                 .addService(new GreetServiceImp())
+                .addService(new CalculatorServiceImp())
                 .build();
 
         server.start();

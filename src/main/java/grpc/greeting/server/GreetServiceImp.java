@@ -1,10 +1,8 @@
 package grpc.greeting.server;
 
-import com.proto.greet.GreetRequest;
-import com.proto.greet.GreetResponse;
-import com.proto.greet.GreetServiceGrpc;
-import com.proto.greet.Greeting;
+import com.proto.greet.*;
 import io.grpc.stub.StreamObserver;
+import lombok.SneakyThrows;
 
 public class GreetServiceImp extends GreetServiceGrpc.GreetServiceImplBase {
 
@@ -17,4 +15,19 @@ public class GreetServiceImp extends GreetServiceGrpc.GreetServiceImplBase {
         responseObserver.onNext(greetResponse);
         responseObserver.onCompleted();
     }
+
+    @Override
+    @SneakyThrows
+    public void greetManyTimes(GreetManyTimesRequest request, StreamObserver<GreetManyTimesResponse> responseObserver) {
+        var firstName = request.getGreeting().getFirstName();
+        for (int i = 0; i < 10; i++) {
+            var result = "Hello " + firstName + " " + i;
+            var response = GreetManyTimesResponse.newBuilder().setResult(result).build();
+            responseObserver.onNext(response);
+            Thread.sleep(1000);
+        }
+        responseObserver.onCompleted();
+    }
 }
+
+
