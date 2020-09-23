@@ -76,6 +76,21 @@ public class GreetServiceImp extends GreetServiceGrpc.GreetServiceImplBase {
 
         return requestObserver;
     }
+
+    @SneakyThrows
+    @Override
+    public void greetDeadline(GreetDeadlineRequest request, StreamObserver<GreetDeadlineResponse> responseObserver) {
+
+        Thread.sleep(400);
+        String result = "";
+        for (int i = 0; i < request.getNamesCount(); i++) {
+            result += "!" + request.getNames(i);
+        }
+
+        GreetDeadlineResponse build = GreetDeadlineResponse.newBuilder().setValue(result).build();
+        responseObserver.onNext(build);
+        responseObserver.onCompleted();
+    }
 }
 
 

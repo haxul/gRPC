@@ -2,14 +2,18 @@ package grpc.greeting.clients;
 
 import com.proto.calculator.*;
 import com.proto.greet.*;
+import io.grpc.Deadline;
 import io.grpc.ManagedChannel;
 import io.grpc.ManagedChannelBuilder;
 import io.grpc.StatusRuntimeException;
 import io.grpc.stub.StreamObserver;
 import lombok.SneakyThrows;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
 public class GreetingClient {
 
@@ -17,7 +21,7 @@ public class GreetingClient {
         ManagedChannel channel = ManagedChannelBuilder.forAddress("localhost", 50051)
                 .usePlaintext()
                 .build();
-        errorSquareHandling(channel);
+        doUnaryWithDeadline(channel);
         channel.shutdown();
     }
 
@@ -149,6 +153,19 @@ public class GreetingClient {
 
     }
 
+    public void doUnaryWithDeadline(ManagedChannel channel) {
+        GreetServiceGrpc.GreetServiceBlockingStub client = GreetServiceGrpc.newBlockingStub(channel);
+        List<String> names = List.of("sergei", "starodubov");
+        var request = GreetDeadlineRequest.newBuilder().addAllNames(names).build();
+
+        try {
+            GreetDeadlineResponse greetDeadlineResponse = client.withDeadline(Deadline.after(100, TimeUnit.MILLISECONDS)).greetDeadline(request);
+            System.out.println(greetDeadlineResponse.getValue());
+        } catch (StatusRuntimeException e) {
+            System.err.println("error");
+            System.out.println(e.getStatus().getCode());
+        }
+    }
     public static void main(String[] args) {
         System.out.println("Start  Greeting Client");
         var client = new GreetingClient();
