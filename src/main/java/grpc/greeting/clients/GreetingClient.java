@@ -166,6 +166,7 @@ public class GreetingClient {
             System.out.println(e.getStatus().getCode());
         }
     }
+
     public static void main(String[] args) {
         System.out.println("Start  Greeting Client");
         var client = new GreetingClient();

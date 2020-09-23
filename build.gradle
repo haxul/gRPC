@@ -16,6 +16,7 @@ dependencies {
     implementation 'io.grpc:grpc-netty-shaded:1.32.1'
     implementation 'io.grpc:grpc-protobuf:1.32.1'
     implementation 'io.grpc:grpc-stub:1.32.1'
+    implementation 'io.grpc:grpc-services:1.32.1'
     compileOnly 'org.apache.tomcat:annotations-api:6.0.53' // necessary for Java 9+
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"

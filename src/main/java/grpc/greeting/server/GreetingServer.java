@@ -2,6 +2,7 @@ package grpc.greeting.server;
 
 import io.grpc.Server;
 import io.grpc.ServerBuilder;
+import io.grpc.protobuf.services.ProtoReflectionService;
 import lombok.SneakyThrows;
 
 public class GreetingServer {
@@ -14,6 +15,7 @@ public class GreetingServer {
                 .forPort(50051)
                 .addService(new GreetServiceImp())
                 .addService(new CalculatorServiceImp())
+                .addService(ProtoReflectionService.newInstance())
                 .build();
 
         server.start();
