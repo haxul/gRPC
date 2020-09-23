@@ -28,6 +28,30 @@ public class GreetServiceImp extends GreetServiceGrpc.GreetServiceImplBase {
         }
         responseObserver.onCompleted();
     }
+
+    @Override
+    public StreamObserver<LongGreetRequest> longGreet(StreamObserver<LongGreetResponse> responseObserver) {
+        return new StreamObserver<LongGreetRequest>() {
+            private String result = "";
+
+            @Override
+            public void onNext(LongGreetRequest value) {
+                result += "hello " + value.getGreeting().getFirstName() + "; ";
+            }
+
+            @Override
+            public void onError(Throwable t) {
+
+            }
+
+            @Override
+            public void onCompleted() {
+                LongGreetResponse response = LongGreetResponse.newBuilder().setResult(result).build();
+                responseObserver.onNext(response);
+                responseObserver.onCompleted();
+            }
+        };
+    }
 }
 
 
