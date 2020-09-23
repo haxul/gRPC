@@ -14,6 +14,24 @@ message SumResponse {
   int32 result = 1;
 }
 
+message AverageRequest {
+  int32 number = 1;
+}
+
+message AverageResponse {
+  int32 average = 1;
+}
+
+message SquareRootRequest {
+  double number = 1;
+}
+message SquareRootResponse {
+  double number = 1;
+}
+
 service CalculatorService {
   rpc Sum(SumRequest) returns (SumResponse);
+  rpc GetAverage(stream AverageRequest) returns (AverageResponse);
+  rpc SquareRoot(SquareRootRequest) returns (SquareRootResponse);
 }
+
